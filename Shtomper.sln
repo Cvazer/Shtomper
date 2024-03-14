@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shtomper", "Shtomper\Shtomper.csproj", "{96AC7C91-F6F9-42E4-864F-580B7E7B9115}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{61A6F167-E761-4860-990F-2F4656034DFD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cli", "Cli\Cli.csproj", "{0717616D-DD7C-4D1C-9E30-09E21F55C969}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shtomper-Converter-NewtonsoftJson", "Shtomper-Converter-NewtonsoftJson\Shtomper-Converter-NewtonsoftJson.csproj", "{148D500B-E421-49BF-8041-F15F9C142233}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shtomper-Client-WebsocketClient", "Shtomper-Client-WebsocketClient\Shtomper-Client-WebsocketClient.csproj", "{4EC95E75-D30D-42A7-88C0-2D5DE066DFF2}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{96AC7C91-F6F9-42E4-864F-580B7E7B9115}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96AC7C91-F6F9-42E4-864F-580B7E7B9115}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96AC7C91-F6F9-42E4-864F-580B7E7B9115}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96AC7C91-F6F9-42E4-864F-580B7E7B9115}.Release|Any CPU.Build.0 = Release|Any CPU
+		{61A6F167-E761-4860-990F-2F4656034DFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{61A6F167-E761-4860-990F-2F4656034DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{61A6F167-E761-4860-990F-2F4656034DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{61A6F167-E761-4860-990F-2F4656034DFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Release|Any CPU.Build.0 = Release|Any CPU
+		{148D500B-E421-49BF-8041-F15F9C142233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{148D500B-E421-49BF-8041-F15F9C142233}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{148D500B-E421-49BF-8041-F15F9C142233}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{148D500B-E421-49BF-8041-F15F9C142233}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4EC95E75-D30D-42A7-88C0-2D5DE066DFF2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4EC95E75-D30D-42A7-88C0-2D5DE066DFF2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4EC95E75-D30D-42A7-88C0-2D5DE066DFF2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4EC95E75-D30D-42A7-88C0-2D5DE066DFF2}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
