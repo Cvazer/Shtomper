@@ -1,3 +1,5 @@
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Server;
 
 public record Error : StompFrame
@@ -7,4 +9,5 @@ public record Error : StompFrame
     }
 
     public new string Message() => base.Message()!;
+    public new string? Receipt() => base.Receipt();
 }

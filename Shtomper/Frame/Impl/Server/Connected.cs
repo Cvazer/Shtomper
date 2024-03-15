@@ -9,7 +9,7 @@ public record Connected : StompFrame
 
     public int NegotiateHeartBeat(int capableHeartBeat)
     {
-        var serverHeartbeat = HeartBeat()!.Split(",").Select(int.Parse).ToArray();
+        var serverHeartbeat = (HeartBeat() ?? "0,0").Split(",").Select(int.Parse).ToArray();
         
         var sy = serverHeartbeat[1];
         var cx = capableHeartBeat < 0 ? 0 : capableHeartBeat;

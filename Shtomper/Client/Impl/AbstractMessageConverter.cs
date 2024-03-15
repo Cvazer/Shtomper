@@ -2,7 +2,7 @@ using Shtomper.Frame;
 using Shtomper.Frame.Impl.Client;
 using Shtomper.Frame.Impl.Server;
 
-namespace Shtomper.Client;
+namespace Shtomper.Client.Impl;
 
 public abstract class AbstractMessageConverter : IMessageConverter
 {

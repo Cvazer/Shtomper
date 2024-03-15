@@ -1,3 +1,5 @@
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Client;
 
 public record Ack : StompFrame 
@@ -17,4 +19,6 @@ public record Ack : StompFrame
     
     public new string? Transaction() => base.Transaction();
     public new void Transaction(string value) => base.Transaction(value);
+
+    public new void Subscription(long value) => base.Subscription(value);
 }

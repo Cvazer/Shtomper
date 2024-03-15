@@ -1,3 +1,6 @@
+using Shtomper.Client.Enum;
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Client;
 
 public record Subscribe : StompFrame

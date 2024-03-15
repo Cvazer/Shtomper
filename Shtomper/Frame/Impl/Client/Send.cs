@@ -1,4 +1,5 @@
 using System.Text;
+using Shtomper.Frame.Enum;
 
 namespace Shtomper.Frame.Impl.Client;
 
@@ -15,7 +16,7 @@ public record Send : StompFrame
 
         if (body == null) return;
 
-        Header(StompHeader.ContentType, Utils.ContentTypeValue(type));
+        Header(StompHeader.ContentType, EnumUtils.ContentTypeValue(type));
         Header(StompHeader.ContentLength, Encoding.ASCII.GetBytes(body).Length.ToString());
     }
     

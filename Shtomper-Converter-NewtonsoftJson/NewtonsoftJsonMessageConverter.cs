@@ -1,5 +1,6 @@
 using Newtonsoft.Json;
 using Shtomper.Client;
+using Shtomper.Client.Impl;
 using Shtomper.Frame;
 
 namespace Shtomper_Converter_NewtonsoftJson;

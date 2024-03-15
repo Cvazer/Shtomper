@@ -6,14 +6,14 @@ using Websocket.Client;
 
 namespace Shtomper_Client_WebsocketClient;
 
-public class WebSocketStompClientV10 : AbstractStompClientV10, IWebSocketStompClient
+public class WebSocketStompClientV11 : AbstractStompClientV11, IWebSocketStompClient
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
     
     private readonly WebsocketClient _websocketClient;
     private readonly bool _debugHb;
 
-    public WebSocketStompClientV10(
+    public WebSocketStompClientV11(
         IMessageConverter messageConverter,
         IHeartbeatHandler heartbeatHandler,
         WebsocketClient websocketClient,

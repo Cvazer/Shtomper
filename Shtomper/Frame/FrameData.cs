@@ -1,4 +1,5 @@
 using System.Text.RegularExpressions;
+using Shtomper.Frame.Enum;
 
 namespace Shtomper.Frame;
 
@@ -9,15 +10,16 @@ public readonly struct FrameData
     );
     
     public Command Command { get; }
-    public Dictionary<string, string> Headers { get; }
+    public List<(string, string)> Headers { get; }
     public string? Body { get; }
 
     public FrameData(Command command, Dictionary<string, string>? headers = null, string? body = null)
+        : this(command, headers?.Select(pair => (pair.Key, pair.Value)).ToList(), body)
     {
-        Command = command;
-        Headers = headers ?? new Dictionary<string, string>();
-        Body = body;
     }
+
+    private FrameData(Command command, List<(string, string)>? headers = null, string? body = null) =>
+        (Command, Headers, Body) = (command, headers ?? new List<(string, string)>(), body);
 
     public static FrameData FromString(string data)
     {
@@ -32,14 +34,15 @@ public readonly struct FrameData
             throw new ArgumentException("Invalid data");
         }
         
-        if (!Enum.TryParse(match.Groups[1].Value, true, out Command cmd))
+        if (!System.Enum.TryParse(match.Groups[1].Value, true, out Command cmd))
         {
             throw new ArgumentException("Invalid stomp command");
         }
-        
+
         var headers = match.Groups[2].Captures
             .Select(it => it.Value.Split(":"))
-            .ToDictionary<string[], string, string>(pairs => Decode(pairs[0]), pairs => Decode(pairs[1]));
+            .Select(it => (Decode(it[0]), Decode(it[1])))
+            .ToList();
         
         var body = match.Groups.Count >= 4 
             ? match.Groups[3].Value 
@@ -53,8 +56,18 @@ public readonly struct FrameData
         var cmd = Command.ToString().ToUpper();
         
         var headers = Headers
-            .Select(pair => Encode(pair.Key) + ":" + Encode(pair.Value))
-            .Aggregate((s1, s2) => s1 + "\n" + s2) + "\n";
+            .Select(pair => Encode(pair.Item1) + ":" + Encode(pair.Item2))
+            .Aggregate("", (s1, s2) => s1 + "\n" + s2);
+
+        if (Headers.Count != 0)
+        {
+            headers = headers.Remove(0, 1);
+        }
+
+        if (Headers.Count != 0)
+        {
+            headers += "\n";
+        }
 
         if (Body == null)
         {

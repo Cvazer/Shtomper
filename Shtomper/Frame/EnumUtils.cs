@@ -1,72 +1,14 @@
+using Shtomper.Client.Enum;
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame;
 
-public enum AckMode
-{
-    Client,
-    Auto
-}
-
-public enum StompVersion
-{
-    V10 = 0,
-    // V11 = 1,
-    // V12 = 2
-}
-
-public enum StompHeader
-{
-    Host,
-    AcceptVersion,
-    Login,
-    Passcode,
-    HeartBeat,
-    Version,
-    Session,
-    Server,
-    Message,
-    Destination,
-    ContentType,
-    ContentLength,
-    Transaction,
-    Ack,
-    Selector,
-    Id,
-    MessageId,
-    Receipt,
-    ReceiptId,
-}
-
-public enum Command
-{
-    Send,
-    Subscribe,
-    Unsubscribe,
-    Begin,
-    Commit,
-    Abort,
-    Ack,
-    Nack,
-    Disconnect,
-    Connect,
-    Stomp,
-    Connected,
-    Message,
-    Receipt,
-    Error
-}
-
-public enum ContentType
-{
-    ApplicationJson,
-    TextPlain
-}
-
-public static class Utils
+public static class EnumUtils
 {
     private static readonly List<(StompVersion, string)> StompVersionStrings = new()
     {
         ( StompVersion.V10, "1.0" ),
-        // ( StompVersion.V11, "1.1" ),
+        ( StompVersion.V11, "1.1" ),
         // ( StompVersion.V12, "1.2" )
     };
 
@@ -91,6 +33,7 @@ public static class Utils
         { StompHeader.MessageId, "message-id" },
         { StompHeader.Receipt, "receipt" },
         { StompHeader.ReceiptId, "receipt-id" },
+        { StompHeader.Subscription, "subscription" },
     };
     
     private static readonly Dictionary<ContentType, string> ContentTypeStrings = new()
@@ -102,6 +45,7 @@ public static class Utils
     private static readonly Dictionary<AckMode, string> AckModeStrings = new()
     {
         { AckMode.Client, "client" },
+        { AckMode.ClientIndividual, "client-individual" },
         { AckMode.Auto, "auto" },
     };
 

@@ -1,5 +1,4 @@
 using Shtomper.Client.Builder;
-using Shtomper.Frame;
 
 namespace Shtomper_Client_WebsocketClient;
 
@@ -19,14 +18,12 @@ public class WebSocketStompClientFactoryBuilder : IStompClientFactoryBuilder<Web
     private WebSocketStompClientFactoryBuilder SetParams(params string[] queryParams)
     {
         Params = queryParams.Aggregate((s1, s2) => $"{s1}&{s2}");
-
         return this;
     }
 
     public WebSocketStompClientFactoryBuilder SetReconnectTimout(int millis)
     {
         ReconnectTimout = millis;
-
         return this;
     }
 
@@ -39,28 +36,24 @@ public class WebSocketStompClientFactoryBuilder : IStompClientFactoryBuilder<Web
     public WebSocketStompClientFactoryBuilder SetHost(string host)
     {
         Host = host;
-
         return this;
     }
     
     public WebSocketStompClientFactoryBuilder SetHostOverride(string hostOverride)
     {
         HostOverride = hostOverride;
-
         return this;
     }
 
     public WebSocketStompClientFactoryBuilder SetPort(int port)
     {
         Port = port;
-
         return this;
     }
 
     public WebSocketStompClientFactoryBuilder SetPath(string path)
     {
         Path = path;
-
         return this;
     }
 

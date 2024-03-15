@@ -1,3 +1,5 @@
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Server;
 
 public record Message : StompFrame
@@ -12,6 +14,8 @@ public record Message : StompFrame
 
     public string? Body() => Data.Body;
 
+    public new long? Subscription() => base.Subscription();
+    public new string? Transaction() => base.Transaction();
     public new string Destination() => base.Destination()!;
     public new string MessageId() => base.MessageId()!;
 };

@@ -1,9 +1,11 @@
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Client;
 
 public record Commit : StompFrame
 {
 
-    protected Commit(string txId) : base(Command.Commit)
+    public Commit(string txId) : base(Command.Commit)
     {
         Transaction(txId);
     }

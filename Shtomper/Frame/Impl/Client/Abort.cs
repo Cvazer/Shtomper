@@ -1,3 +1,5 @@
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Client;
 
 public record Abort : StompFrame

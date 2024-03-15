@@ -1,3 +1,4 @@
+using Shtomper.Client.Enum;
 using Shtomper.Frame;
 using Shtomper.Frame.Impl.Client;
 using Shtomper.Frame.Impl.Server;
@@ -13,59 +14,52 @@ public class StompClientBuilder
     public string Passcode { get; private set; } = "guest";
     public int HeartbeatDesired { get; private set; }
     public int HeartbeatCapable { get; private set; }
-    public AckMode AckMode { get; private set; }
     public bool ReceiptMode { get; private set; }
+    public bool DebugHeartbeat { get; private set; }
 
     public StompClientBuilder SetHeartbeatDesired(int heartbeatDesired)
     {
         HeartbeatDesired = heartbeatDesired;
-
         return this;
     }
 
     public StompClientBuilder SetHeartbeatCapable(int heartbeatCapable)
     {
         HeartbeatCapable = heartbeatCapable;
-
         return this;
     }
 
     public StompClientBuilder SetUsername(string username)
     {
         Username = username;
-
         return this;
     }
 
     public StompClientBuilder SetPasscode(string passcode)
     {
         Passcode = passcode;
-
         return this;
     }
 
     public StompClientBuilder SetMessageConverter(IMessageConverter converter)
     {
         MessageConverter = converter;
-
         return this;
     }
-    
-    public StompClientBuilder SetAckMode(AckMode ackMode)
+
+    public StompClientBuilder SetDebugHeartbeat(bool debugHeartbeat)
     {
-        AckMode = ackMode;
-
-        return this;
-    }
-    
-    public StompClientBuilder SetReceiptMode(bool receiptMode)
-    {
-        ReceiptMode = receiptMode;
-
+        DebugHeartbeat = debugHeartbeat;
         return this;
     }
 
-    public TFactoryBuilder WithBuilder<TFactoryBuilder>(TFactoryBuilder builderInstance) 
+    // public StompClientBuilder SetReceiptMode(bool receiptMode)
+    // {
+    //     ReceiptMode = receiptMode;
+    //     return this;
+    // }
+
+    public TFactoryBuilder WithBuilder<TFactoryBuilder>(TFactoryBuilder builderInstance)
         where TFactoryBuilder : IStompClientFactoryBuilder<IStompClientFactory<IStompClient, TFactoryBuilder>>
     {
         CheckMessageConverter();
@@ -81,4 +75,3 @@ public class StompClientBuilder
         }
     }
 }
-

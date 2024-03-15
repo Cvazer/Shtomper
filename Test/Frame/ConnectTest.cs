@@ -1,5 +1,6 @@
 using System.Text;
 using Shtomper.Frame;
+using Shtomper.Frame.Enum;
 using Shtomper.Frame.Impl.Client;
 using Xunit;
 

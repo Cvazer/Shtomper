@@ -1,9 +1,11 @@
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Client;
 
 public record Begin : StompFrame
 {
 
-    protected Begin(string txId) : base(Command.Begin)
+    public Begin(string txId) : base(Command.Begin)
     {
         Transaction(txId);
     }

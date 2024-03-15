@@ -1,6 +1,9 @@
+using Shtomper.Client.Enum;
+using Shtomper.Frame.Enum;
+
 namespace Shtomper.Frame.Impl.Client;
 
-using static Utils;
+using static EnumUtils;
 using static StompHeader;
 
 public record Connect : StompFrame
@@ -16,30 +19,21 @@ public record Connect : StompFrame
         int heartBeatDesired = DefaultDesiredHeartBeat
     ) : base(Command.Connect)
     {
-        Data.Headers[HeaderName(AcceptVersion)] = GetCapableVersions(Enum.GetValues<StompVersion>());
+        Header(AcceptVersion, GetCapableVersions(System.Enum.GetValues<StompVersion>()));
+        Header(StompHeader.HeartBeat, GetHeartBeatValue(heartBeatCapable, heartBeatDesired));
 
-        if (hostname != null)
-        {
-            Data.Headers[HeaderName(Host)] = hostname;
-        }
-
-        if (login != null)
-        {
-            Data.Headers[HeaderName(Login)] = login;
-        }
-
-        if (passcode != null)
-        {
-            Data.Headers[HeaderName(Passcode)] = passcode;
-        }
-
-        Data.Headers[HeaderName(StompHeader.HeartBeat)] = GetHeartBeatValue(heartBeatCapable, heartBeatDesired);
+        if (hostname != null) Header(Host, hostname);
+        if (login != null) Header(Login, login);
+        if (passcode != null) Header(Passcode, passcode);
     }
 
-    private static string GetCapableVersions(StompVersion[] versions) => versions
-        .ToList()
-        .Select(StompVersionName)
-        .Aggregate((v1, v2) => v1 + "," + v2);
+    private static string GetCapableVersions(StompVersion[] versions)
+    {
+        return versions
+            .ToList()
+            .Select(StompVersionName)
+            .Aggregate((v1, v2) => v1 + "," + v2);
+    }
     
     private static string GetHeartBeatValue(int capable, int desired) => $"{capable},{desired}";
 }
