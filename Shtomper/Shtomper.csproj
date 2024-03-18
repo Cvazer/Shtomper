@@ -12,6 +12,8 @@
         <RepositoryUrl>https://github.com/Cvazer/Shtomper</RepositoryUrl>
         <RepositoryType>Github</RepositoryType>
         <PackageTags>sharp stomp websocket dotnet</PackageTags>
+        <Version>1.0.0.1</Version>
+        <PackageReleaseNotes>Cleaned up dependencies</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
