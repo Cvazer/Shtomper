@@ -4,8 +4,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shtomper", "Shtomper\Shtomp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{61A6F167-E761-4860-990F-2F4656034DFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cli", "Cli\Cli.csproj", "{0717616D-DD7C-4D1C-9E30-09E21F55C969}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shtomper-Converter-NewtonsoftJson", "Shtomper-Converter-NewtonsoftJson\Shtomper-Converter-NewtonsoftJson.csproj", "{148D500B-E421-49BF-8041-F15F9C142233}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shtomper-Client-WebsocketClient", "Shtomper-Client-WebsocketClient\Shtomper-Client-WebsocketClient.csproj", "{4EC95E75-D30D-42A7-88C0-2D5DE066DFF2}"
@@ -24,10 +22,6 @@ Global
 		{61A6F167-E761-4860-990F-2F4656034DFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{61A6F167-E761-4860-990F-2F4656034DFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{61A6F167-E761-4860-990F-2F4656034DFD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0717616D-DD7C-4D1C-9E30-09E21F55C969}.Release|Any CPU.Build.0 = Release|Any CPU
 		{148D500B-E421-49BF-8041-F15F9C142233}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{148D500B-E421-49BF-8041-F15F9C142233}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{148D500B-E421-49BF-8041-F15F9C142233}.Release|Any CPU.ActiveCfg = Release|Any CPU
