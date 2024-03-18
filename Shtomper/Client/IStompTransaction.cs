@@ -5,7 +5,7 @@ namespace Shtomper.Client;
 public interface IStompTransaction
 {
     TransactionStatus Status { get; }
-    string TransactionName { get; }
+    string? TransactionName { get; }
     
     void Commit();
     void Abort();

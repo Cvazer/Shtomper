@@ -5,11 +5,11 @@ using Websocket.Client;
 
 namespace Shtomper_Client_WebsocketClient;
 
-public class WebSocketStompClientV11 : AbstractStompClientV11, IWebSocketStompClient
+public class WebSocketStompClientV12 : AbstractStompClientV12, IWebSocketStompClient
 {
     private readonly WebSocketStompClientCommonHandler _handler;
     
-    public WebSocketStompClientV11(
+    public WebSocketStompClientV12(
         IMessageConverter messageConverter,
         IHeartbeatHandler heartbeatHandler,
         WebsocketClient websocketClient,

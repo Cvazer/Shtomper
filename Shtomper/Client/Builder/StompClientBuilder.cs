@@ -14,6 +14,7 @@ public class StompClientBuilder
     public string Passcode { get; private set; } = "guest";
     public int HeartbeatDesired { get; private set; }
     public int HeartbeatCapable { get; private set; }
+    public bool NackMode { get; private set; } = true;
     public bool ReceiptMode { get; private set; }
     public bool DebugHeartbeat { get; private set; }
 
@@ -53,11 +54,11 @@ public class StompClientBuilder
         return this;
     }
 
-    // public StompClientBuilder SetReceiptMode(bool receiptMode)
-    // {
-    //     ReceiptMode = receiptMode;
-    //     return this;
-    // }
+    public StompClientBuilder SetNackMode(bool nackMode)
+    {
+        NackMode = nackMode;
+        return this;
+    }
 
     public TFactoryBuilder WithBuilder<TFactoryBuilder>(TFactoryBuilder builderInstance)
         where TFactoryBuilder : IStompClientFactoryBuilder<IStompClientFactory<IStompClient, TFactoryBuilder>>

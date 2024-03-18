@@ -5,12 +5,13 @@ namespace Shtomper.Frame.Impl.Client;
 public record Ack : StompFrame 
 {
 
-    public Ack(string msgId, string? txId = null) : base(Command.Ack)
+    public Ack(string? txId = null) : this(Command.Ack, txId) { }
+
+    protected Ack(Command command, string? txId = null) : base(command)
     {
-        MessageId(msgId);
         if (txId != null) Transaction(txId);
     }
-    
+
     public new string? Receipt() => base.Receipt();
     public new void Receipt(string value) => base.Receipt(value);
     

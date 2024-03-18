@@ -17,25 +17,25 @@ public class
     WebSocketStompClientFactory : IStompClientFactory<IStompClient, WebSocketStompClientFactoryBuilder>
 {
     private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-    public WebSocketStompClientFactoryBuilder Builder { get; }
+    private readonly WebSocketStompClientFactoryBuilder _builder;
 
-    public WebSocketStompClientFactory(WebSocketStompClientFactoryBuilder builder) => Builder = builder;
+    public WebSocketStompClientFactory(WebSocketStompClientFactoryBuilder builder) => _builder = builder;
 
     public IStompClient Create()
     {
         var uriBuilder = new UriBuilder(
-            Builder.Schema,
-            Builder.Host,
-            Builder.Port,
-            Builder.Path,
-            Builder.Params
+            _builder.Schema,
+            _builder.Host,
+            _builder.Port,
+            _builder.Path,
+            _builder.Params
         );
 
         var wsClient = new WebsocketClient(uriBuilder.Uri);
 
-        if (Builder.ReconnectTimout > 0)
+        if (_builder.ReconnectTimout > 0)
         {
-            wsClient.ReconnectTimeout = TimeSpan.FromMilliseconds(Builder.ReconnectTimout);
+            wsClient.ReconnectTimeout = TimeSpan.FromMilliseconds(_builder.ReconnectTimout);
         }
 
         wsClient.Start().Wait(TimeSpan.FromSeconds(30));
@@ -82,11 +82,11 @@ public class
         );
 
         var connectFrame = new Connect(
-            Builder.HostOverride ?? Builder.Host,
-            Builder.ClientBuilder!.Username,
-            Builder.ClientBuilder!.Passcode,
-            Builder.ClientBuilder!.HeartbeatCapable,
-            Builder.ClientBuilder!.HeartbeatDesired
+            _builder.HostOverride ?? _builder.Host,
+            _builder.ClientBuilder!.Username,
+            _builder.ClientBuilder!.Passcode,
+            _builder.ClientBuilder!.HeartbeatCapable,
+            _builder.ClientBuilder!.HeartbeatDesired
         );
 
         Logger.Trace("\n" + connectFrame);
@@ -123,18 +123,28 @@ public class
         return version switch
         {
             StompVersion.V10 => new WebSocketStompClientV10(
-                Builder.ClientBuilder!.MessageConverter!,
+                _builder.ClientBuilder!.MessageConverter!,
                 heartbeatHandler,
                 wsClient,
-                Builder.ClientBuilder!.ReceiptMode,
-                Builder.ClientBuilder.DebugHeartbeat
+                _builder.ClientBuilder!.ReceiptMode,
+                _builder.ClientBuilder!.NackMode,
+                _builder.ClientBuilder.DebugHeartbeat
             ),
             StompVersion.V11 => new WebSocketStompClientV11(
-                Builder.ClientBuilder!.MessageConverter!,
+                _builder.ClientBuilder!.MessageConverter!,
                 heartbeatHandler,
                 wsClient,
-                Builder.ClientBuilder!.ReceiptMode,
-                Builder.ClientBuilder.DebugHeartbeat
+                _builder.ClientBuilder!.ReceiptMode,
+                _builder.ClientBuilder!.NackMode,
+                _builder.ClientBuilder.DebugHeartbeat
+            ),
+            StompVersion.V12 => new WebSocketStompClientV12(
+                _builder.ClientBuilder!.MessageConverter!,
+                heartbeatHandler,
+                wsClient,
+                _builder.ClientBuilder!.ReceiptMode,
+                _builder.ClientBuilder!.NackMode,
+                _builder.ClientBuilder.DebugHeartbeat
             ),
             _ => throw new ArgumentException("Invalid version")
         };
@@ -145,7 +155,7 @@ public class
         var version = connectedFrame.Version() ?? StompVersionName(StompVersion.V10);
         if (version.Equals(StompVersionName(StompVersion.V10))) return new NoOpHeartbeatHandler();
 
-        var hb = connectedFrame.NegotiateHeartBeat(Builder.ClientBuilder!.HeartbeatCapable);
+        var hb = connectedFrame.NegotiateHeartBeat(_builder.ClientBuilder!.HeartbeatCapable);
         if (hb == 0) return new NoOpHeartbeatHandler();
 
         return new DefaultHeartbeatHandler(hb);

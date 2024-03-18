@@ -11,17 +11,14 @@ public class StompTransactionV10 : IStompTransaction
     
     private readonly AbstractStompClientV10 _client;
     
-    public string TransactionName { get; private set; }
+    public string? TransactionName { get; private set; }
     public TransactionStatus Status { get; private set; }
 
     public StompTransactionV10(AbstractStompClientV10 client) => _client = client;
 
     public IStompTransaction Begin(string? txId = null)
     {
-        if (Status != TransactionStatus.Created)
-        {
-            throw new TransactionException("Already started");
-        }
+        if (Status != TransactionStatus.Created) throw new TransactionException("Already started");
 
         TransactionName = txId ?? Guid.NewGuid().ToString();
         _client.SendMaybeWithReceipt(new Begin(TransactionName));
@@ -49,21 +46,19 @@ public class StompTransactionV10 : IStompTransaction
     public IStompTransaction Send<T>(string destination, T data)
     {
         _client.Send(destination, data, TransactionName);
-
         return this;
     }
 
     private void CheckOngoingTransactionStatus()
     {
-        if (Status != TransactionStatus.Ongoing)
-        {
-            throw new TransactionException(
-                Status switch
-                {
-                    TransactionStatus.Closed => "Already closed",
-                    TransactionStatus.Created => "Not started yet"
-                }
-            );
-        }
+        if (Status == TransactionStatus.Ongoing) return;
+        throw new TransactionException(
+            Status switch
+            {
+                TransactionStatus.Closed => "Already closed",
+                TransactionStatus.Created => "Not started yet",
+                _ => throw new ArgumentException("Unhandled Status")
+            }
+        );
     }
 }

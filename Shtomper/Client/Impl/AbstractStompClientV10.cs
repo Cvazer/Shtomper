@@ -22,6 +22,7 @@ public abstract class AbstractStompClientV10 : IStompClient
     public IMessageConverter MessageConverter { get; }
     public IHeartbeatHandler HeartbeatHandler { get; }
     public bool ReceiptMode { get; }
+    public bool NackMode { get; }
 
     protected readonly ConcurrentDictionary<string, ConcurrentDictionary<long, Action<Message>>> Handlers = new();
     protected readonly ConcurrentDictionary<string, ManualResetEventSlim> ReceiptLocks = new();
@@ -38,11 +39,13 @@ public abstract class AbstractStompClientV10 : IStompClient
     protected AbstractStompClientV10(
         IMessageConverter messageConverter,
         IHeartbeatHandler heartbeatHandler,
-        bool receiptMode = false
+        bool receiptMode = false,
+        bool nackMode = false
     )
     {
         MessageConverter = messageConverter;
         HeartbeatHandler = heartbeatHandler;
+        NackMode = nackMode;
         ReceiptMode = receiptMode;
 
         ThreadPool.QueueUserWorkItem(_ => HeartbeatHandler.Start(SendHeartBeat));
@@ -89,7 +92,7 @@ public abstract class AbstractStompClientV10 : IStompClient
         if (lastMsg == null) return;
         MessageQueue.Clear();
     }
-    
+
     public void Send<T>(string destination, T data, Dictionary<string, string>? userHeaders = null)
     {
         Send(destination, data, txId: null);
@@ -105,13 +108,6 @@ public abstract class AbstractStompClientV10 : IStompClient
     public long Subscribe<T>(string destination, Action<T> callback, AckMode ackMode = AckMode.Auto)
     {
         var sub = new Subscribe(destination, ackMode);
-        SetUpSubscription(destination, callback, sub, ackMode);
-        SendMaybeWithReceipt(sub);
-        return sub.Id()!.Value;
-    }
-
-    protected virtual void SetUpSubscription<T>(string destination, Action<T> callback, Subscribe sub, AckMode ackMode)
-    {
 
         if (!Handlers.ContainsKey(destination))
         {
@@ -123,32 +119,30 @@ public abstract class AbstractStompClientV10 : IStompClient
             SubInfo[destination] = new ConcurrentDictionary<long, AckMode>();
         }
 
-        Action<Message> handler = msg =>
+        void Handler(Message msg)
         {
-            try
-            {
-                var obj = MessageConverter.Convert<T>(msg);
-                if (obj != null) callback.Invoke(obj);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-            }
-        };
+            var obj = MessageConverter.Convert<T>(msg);
+            if (obj != null) callback.Invoke(obj);
+        }
 
-        Handlers[destination][-1] = handler;
-        Handlers[destination][sub.Id()!.Value] = handler;
+        Handlers[destination][-1] = Handler;
+        Handlers[destination][sub.Id()!.Value] = Handler;
 
         SubInfo[destination][-1] = ackMode;
         SubInfo[destination][sub.Id()!.Value] = ackMode;
+
+        SendMaybeWithReceipt(sub);
+
+        return sub.Id()!.Value;
     }
 
     public IStompTransaction Transaction(string? txId = null)
     {
         var tx = new StompTransactionV10(this);
         var transactionName = tx.Begin(txId).TransactionName;
-        Transactions[transactionName] = tx;
-        tx.FinalizedEvent += () => Transactions.Remove(transactionName, out _);
+        Transactions[transactionName!] = tx;
+        tx.FinalizedEvent += () => Transactions!.Remove(transactionName, out _);
+
         return tx;
     }
 
@@ -205,28 +199,26 @@ public abstract class AbstractStompClientV10 : IStompClient
         var destination = msg.Destination();
         var subId = msg.Subscription() ?? -1;
         var txId = msg.Transaction();
-
-        if (txId != null && !Transactions.ContainsKey(txId))
-        {
-            MessageDiscardedEvent?.Invoke(msg);
-            return;
-        }
+        var ackMode = SubInfo[destination][subId];
 
         if (!Handlers.ContainsKey(destination))
         {
+            if (ackMode != AckMode.Auto) DoNack(msg, subId, txId);
             MessageDiscardedEvent?.Invoke(msg);
             return;
         }
 
-        InvokeHandlerForMessage(msg, destination, subId);
+        try
+        {
+            Handlers[destination][subId].Invoke(msg);
+        }
+        catch (Exception)
+        {
+            if (ackMode != AckMode.Auto) DoNack(msg, subId, txId);
+            return;
+        }
 
-        var ackMode = SubInfo[destination][subId];
-        if (ackMode != AckMode.Auto) AckMessage(ackMode, msg, txId, destination);
-    }
-
-    protected virtual void InvokeHandlerForMessage(Message msg, string destination, long subId)
-    {
-        Handlers[destination][subId].Invoke(msg);
+        if (ackMode != AckMode.Auto) AckMessage(ackMode, msg, txId, subId);
     }
 
     private void HandleServerError(Error error)
@@ -242,13 +234,14 @@ public abstract class AbstractStompClientV10 : IStompClient
     internal void SendMaybeWithReceipt(StompFrame frame)
     {
         if (_disposed) throw new StompException("Already disposed");
-        
+
         var doReceiptIfTransaction = frame.Transaction() != null
                                      && !DoReceiptOnTransaction.Contains(frame.Data.Command);
 
-        if (!AssessReceiptMode(frame) || doReceiptIfTransaction || AssessForDisconnect(frame))
+        if (!ReceiptMode || doReceiptIfTransaction || frame.Data.Command == Command.Disconnect)
         {
             SendFrame(frame);
+
             return;
         }
 
@@ -265,6 +258,7 @@ public abstract class AbstractStompClientV10 : IStompClient
         catch (Exception)
         {
             ReceiptLocks.Remove(guid, out _);
+
             throw;
         }
 
@@ -277,28 +271,34 @@ public abstract class AbstractStompClientV10 : IStompClient
         }
     }
 
-    protected virtual bool AssessReceiptMode(StompFrame frame) => ReceiptMode;
-    protected virtual bool AssessForDisconnect(StompFrame frame) => frame.Data.Command == Command.Disconnect;
-
-    protected virtual void AckMessage(AckMode ackMode, Message msg, string? txId, string destination)
+    protected virtual void AckMessage(AckMode ackMode, Message msg, string? txId, long subId)
     {
         if (ackMode != AckMode.Client) return;
-        DoActualAck(msg, txId);
+        DoActualAck(msg, txId, subId);
     }
 
-    protected virtual void DoActualAck(Message msg, string? txId)
+    protected void DoActualAck(Message msg, string? txId, long subId) =>
+        DoActualAck(new Ack(), msg, txId, subId);
+
+    protected virtual void DoActualAck(Ack obj, Message msg, string? txId, long subId)
     {
-        var ack = new Ack(msg.MessageId());
-        if (txId != null) ack.Transaction(txId);
-        SendMaybeWithReceipt(ack);
+        obj.MessageId(msg.MessageId());
+        if (txId != null) obj.Transaction(txId);
+        SendMaybeWithReceipt(obj);
     }
-    
+
+    private void DoNack(Message msg, long subId, string? txId)
+    {
+        if (!NackMode) return;
+        DoActualAck(new Nack(), msg, txId, subId);
+    }
+
     public virtual void Dispose()
     {
         if (_disposed) return;
 
         SendMaybeWithReceipt(new Disconnect());
-        
+
         StopToken.Cancel();
         MessageQueueWriteEvent.Set();
 
@@ -311,7 +311,7 @@ public abstract class AbstractStompClientV10 : IStompClient
         HeartbeatHandler.Dispose();
         MessageQueueWriteEvent.Dispose();
         StopToken.Dispose();
-        
+
         _disposed = true;
     }
 

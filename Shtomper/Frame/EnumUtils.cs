@@ -9,7 +9,7 @@ public static class EnumUtils
     {
         ( StompVersion.V10, "1.0" ),
         ( StompVersion.V11, "1.1" ),
-        // ( StompVersion.V12, "1.2" )
+        ( StompVersion.V12, "1.2" )
     };
 
     private static readonly Dictionary<StompHeader, string> StompHeaderStrings = new()
