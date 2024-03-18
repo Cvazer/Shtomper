@@ -5,6 +5,14 @@
         <RootNamespace>Shtomper_Converter_NewtonsoftJson</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>Shtomper.Converter.NewtonsoftJson</PackageId>
+        <Title>Shtomper-Converter-NewtonsoftJson</Title>
+        <Authors>Yan Frankovski</Authors>
+        <Description>Json converter implementation for Shtomper. Based on Newtonsoft JSON libs</Description>
+        <PackageLicenseUrl>https://licenses.nuget.org/BSD-3-Clause</PackageLicenseUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/Cvazer/Shtomper</RepositoryUrl>
+        <PackageTags>stomp websocket json</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
@@ -13,6 +21,14 @@
 
     <ItemGroup>
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\icon.png">
+        <Pack>True</Pack>
+        <PackagePath></PackagePath>
+        <Link>icon.png</Link>
+      </None>
     </ItemGroup>
 
 </Project>

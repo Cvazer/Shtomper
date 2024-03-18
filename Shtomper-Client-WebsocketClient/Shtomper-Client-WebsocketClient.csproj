@@ -5,6 +5,18 @@
         <RootNamespace>Shtomper_Client_WebsocketClient</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <PackageId>Shtomper.Client.Websocket</PackageId>
+        <Title>Shtomper-Client-Websocket</Title>
+        <Authors>Yan Frankovski</Authors>
+        <Description>Websocket client implementation for Shtomper abstraction</Description>
+        <PackageLicenseUrl>https://licenses.nuget.org/BSD-3-Clause</PackageLicenseUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <Product>Shtomper-Client-Websocket</Product>
+        <AssemblyVersion>1.0.0</AssemblyVersion>
+        <PublicSign>false</PublicSign>
+        <RepositoryUrl>https://github.com/Cvazer/Shtomper</RepositoryUrl>
+        <RepositoryType>Github</RepositoryType>
+        <PackageTags>stomp websocket dotnet sharp</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +26,14 @@
     <ItemGroup>
       <PackageReference Include="NLog" Version="5.*" />
       <PackageReference Include="Websocket.Client" Version="5.*" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="..\icon.png">
+        <Pack>True</Pack>
+        <Link>icon.png</Link>
+        <PackagePath></PackagePath>
+      </None>
     </ItemGroup>
 
 </Project>

@@ -4,10 +4,22 @@
         <TargetFramework>net6.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <Title>Shtomper</Title>
+        <Authors>Yan Frankovski</Authors>
+        <Description>STOMP client Writen in C# for .NET platform.</Description>
+        <PackageLicenseUrl>https://licenses.nuget.org/BSD-3-Clause</PackageLicenseUrl>
+        <PackageIcon>icon.png</PackageIcon>
+        <RepositoryUrl>https://github.com/Cvazer/Shtomper</RepositoryUrl>
+        <RepositoryType>Github</RepositoryType>
+        <PackageTags>sharp stomp websocket dotnet</PackageTags>
     </PropertyGroup>
 
     <ItemGroup>
-      <PackageReference Include="Websocket.Client" Version="5.1.1" />
+      <None Include="..\icon.png">
+        <Pack>True</Pack>
+        <Link>icon.png</Link>
+        <PackagePath></PackagePath>  
+      </None>
     </ItemGroup>
 
 </Project>
