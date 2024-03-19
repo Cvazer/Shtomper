@@ -1,4 +1,4 @@
-[![NuGet](https://img.shields.io/nuget/v/Stomp.Net.svg)](https://www.nuget.org/packages/Shtomper)
+[![NuGet](https://img.shields.io/nuget/v/Shtomper.svg)](https://www.nuget.org/packages/Shtomper)
 [![License](https://img.shields.io/:license-BSD-orange.svg)](https://raw.githubusercontent.com/Cvazer/Shtomper/main/LICENSE)
 
 This is a basic implementation of [STOMP](https://stomp.github.io/index.html) protocol which works over Websocket to transfer lightweight frames. 
