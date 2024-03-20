@@ -1,4 +1,12 @@
+[![Static Badge](https://img.shields.io/badge/Shtomper-bf477b?uGet&link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FShtomper)](https://www.nuget.org/packages/Shtomper)
 [![NuGet](https://img.shields.io/nuget/v/Shtomper.svg)](https://www.nuget.org/packages/Shtomper)
+<br>
+[![Static Badge](https://img.shields.io/badge/Websocket%20Client-bf477b?link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FShtomper.Client.Websocket)](https://www.nuget.org/packages/Shtomper.Client.Websocket)
+[![NuGet](https://img.shields.io/nuget/v/Shtomper.Client.Websocket.svg)](https://www.nuget.org/packages/Shtomper.Client.Websocket)
+<br>
+[![Static Badge](https://img.shields.io/badge/JSON%20Converter-bf477b?link=https%3A%2F%2Fwww.nuget.org%2Fpackages%2FShtomper.Converter.NewtonsoftJson)](https://www.nuget.org/packages/Shtomper.Converter.NewtonsoftJson)
+[![NuGet Version](https://img.shields.io/nuget/v/Shtomper.Converter.NewtonsoftJson)](https://www.nuget.org/packages/Shtomper.Converter.NewtonsoftJson)
+<br>
 [![License](https://img.shields.io/:license-BSD-orange.svg)](https://raw.githubusercontent.com/Cvazer/Shtomper/main/LICENSE)
 
 This is a basic implementation of [STOMP](https://stomp.github.io/index.html) protocol which works over Websocket to transfer lightweight frames. 
